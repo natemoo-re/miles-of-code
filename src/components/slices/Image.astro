@@ -1,0 +1,23 @@
+---
+const { primary: { image: { url, alt, dimensions: d }, width } } = Astro.props;
+---
+
+<img class={width} width={d.width} height={d.height} src={url} alt={alt} />
+
+<style>
+.full-width {
+    object-fit: contain;
+    min-width: 100vw;
+    max-width: 100%;
+    margin-left: 50%;
+    height: auto;
+    transform: translateX(-50%);
+}
+
+.inline {
+    object-fit: contain;
+    min-width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+</style>

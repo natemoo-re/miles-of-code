@@ -1,0 +1,45 @@
+---
+// Component Imports
+import BaseHead from '../../components/BaseHead.astro';
+import BlogHeader from '../../components/BlogHeader.astro';
+import { getAllPosts } from '../../prismic.ts';
+
+const posts = await getAllPosts().then(res => res.results);
+let title = 'Posts';
+let description = 'The perfect starter for your perfect blog.';
+let permalink = 'https://example.com/';
+const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+---
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} permalink={permalink} />
+    <link rel="stylesheet" href="/blog.css" />
+    <style>
+      a {
+        color: var(--color);
+        display: block;
+        transform: rotateZ(var(--rot));
+      }
+
+      a:hover,
+      a:focus {
+        color: var(--color-gray-900);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <BlogHeader />
+    <div class="layout">
+        {posts.map((post, i) => {
+            return (
+                <article style={`--rot: ${Math.floor(Math.random() * -8)}deg; --color: var(--color-${colors[i % colors.length]});`}>
+                    <a href={`/posts/${post.uid}`}>
+                        <h2>{post.data.title}</h2>
+                    </a>
+                </article>
+            )
+        })}
+    </div>
+  </body>
+</html>

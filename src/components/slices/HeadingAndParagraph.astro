@@ -1,0 +1,13 @@
+---
+import PrismicHtml from '../PrismicHtml.astro';
+const { primary } = Astro.props;
+---
+
+<section>
+    <div>
+        <PrismicHtml content={primary.heading} />
+    </div>
+    <div>
+        <PrismicHtml content={primary.rich_text} />
+    </div>
+</section>

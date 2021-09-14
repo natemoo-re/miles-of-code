@@ -1,0 +1,84 @@
+---
+// Component Imports
+import BaseHead from '../components/BaseHead.astro';
+import BlogHeader from '../components/BlogHeader.astro';
+import PrismicDOM from 'prismic-dom';
+import PrismicContent from '../components/PrismicContent.astro';
+import PrismicText from '../components/PrismicText.astro';
+import { getPage } from '../prismic.ts';
+
+const doc = await getPage('about');
+let title = doc.data.page_title;
+let permalink = Astro.request.canonicalURL.toString();
+---
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={""} permalink={permalink} />
+    <link rel="stylesheet" href="/blog.css" />
+
+    <style>
+      body {
+        width: 100%;
+        display: grid;
+        grid-template-rows: 3.5rem 1fr;
+        --gutter: 0.5rem;
+        --doc-padding: 2rem;
+      }
+
+      header {
+        width: 100%;
+        height: 100%;
+        background-color: var(--theme-bg-offset);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        margin-top: 4rem;
+        margin-bottom: 8rem;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .intro {
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 8px dotted var(--theme-divider);
+        color: var(--theme-accent);
+      }
+
+      .intro > h1 {
+        margin: 0;
+        font-size: 5em;
+        text-align: center;
+      }
+
+      .latest {
+        font-size: 2.5rem;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+
+  <body>
+    <BlogHeader />
+    <div class="layout">
+      <article class="content">
+        <div class="intro">
+          <h1><PrismicText content={doc.data.heading} /></h1>
+        </div>
+        <main>
+          <PrismicContent content={doc.data.body1} />
+        </main>
+      </article>
+    </div>
+  </body>
+</html>

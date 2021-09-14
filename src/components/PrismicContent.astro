@@ -1,0 +1,25 @@
+---
+import PrismicDOM from 'prismic-dom';
+import { Code } from 'astro/components';
+import HeadingAndParagraph from '../components/slices/HeadingAndParagraph.astro'
+import Image from '../components/slices/Image.astro'
+import TwitterCard from '../components/slices/TwitterCard.astro'
+import GeneralCard from '../components/slices/GeneralCard.astro'
+const { content } = Astro.props;
+---
+
+{content.map(slice => {
+    switch (slice.slice_type) {
+        case 'heading_and_paragraph': return <HeadingAndParagraph {...slice} />
+        case 'image': return <Image {...slice} />
+        case 'twitter_card': return <TwitterCard {...slice} />;
+        case 'general_card': return <GeneralCard {...slice} />;
+        case 'rich_text': return PrismicDOM.RichText.asHtml(slice.primary.rich_text);
+        case 'code_block': {
+            const text = slice.primary.code[0].text.slice(3, -3).trim();
+            let [lang, ...code] = text.split('\n');
+            code = code.join('\n');
+            return <Code code={code} lang={lang} />
+        }
+    }
+})}

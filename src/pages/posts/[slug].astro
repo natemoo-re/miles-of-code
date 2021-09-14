@@ -1,0 +1,36 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import BlogHeader from '../../components/BlogHeader.astro';
+import PrismicContent from '../../components/PrismicContent.astro';
+import { getAllPosts } from '../../prismic.ts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts().then(res => res.results);
+  return posts.map(post => {
+    return { params: { slug: post.uid }, props: { post }}
+  })
+}
+const { post } = Astro.props;
+
+let title = post.data.title;
+let description = 'The perfect starter for your perfect blog.';
+let permalink = 'https://example.com/';
+---
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} permalink={permalink} />
+    <link rel="stylesheet" href="/blog.css" />
+  </head>
+  <body>
+    <BlogHeader />
+    <div class="layout">
+      <article class="content">
+        <section class="intro">
+        </section>
+        <main>
+          <PrismicContent content={post.data.body} />
+        </main>
+      </article>
+    </div>
+  </body>
+</html>
